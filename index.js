@@ -1,5 +1,6 @@
-var snapshot = IOTA.latestSnapshot;
 var iri = com.iota.iri;
+//var snapshot = IOTA.latestSnapshot;
+var snapshot = iri.Snapshot.latestSnapshot;
 var Callable = iri.service.CallableRequest;
 var Response = iri.service.dto.IXIResponse;
 
