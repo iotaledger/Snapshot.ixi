@@ -8,7 +8,9 @@ After you've cloned it, and with a running iri node, run the following command t
 curl http://localhost:14265 -X POST -H 'Content-Type: application/json'   -d '{"command": "Snapshot.getState"}'
 ```
 
-### Troubleshooting:
+-----
+
+#### Troubleshooting:
 
 - Make sure the result `index` matches `latestSolidSubtangleMilestoneIndex`:
 
@@ -16,6 +18,6 @@ curl http://localhost:14265 -X POST -H 'Content-Type: application/json'   -d '{"
 curl http://localhost:14265 -X POST   -H 'Content-Type: application/json'   -d '{"command": "getNodeInfo"}'
 ```
 
-- If not, re-run iri with `--revalidate` flag
+- If not, re-run iri with `--revalidate` flag, this will re-validate all the milestones & build an up-to-date snapshot. after the `latestSolidSubtangleMilestoneIndex` is up-to-date, rerun `Snapshot.getState` API command.
 
-- _* it's always best to save a DB backup just in case_
+- _it's always best to backup your DB._
