@@ -5,7 +5,7 @@ Your node may be running at this time, and it will hot-load the script.
 After you've cloned it, and with a running iri node, run the following command to get the latest snapshot:
 
 ```
-curl http://localhost:14265 -X POST -H 'Content-Type: application/json'   -d '{"command": "Snapshot.getState"}'
+curl http://localhost:14265 -X POST -H 'X-IOTA-API-Version: 1.4.1' -H 'Content-Type: application/json'   -d '{"command": "Snapshot.getState"}'
 ```
 
 -----
@@ -15,7 +15,7 @@ curl http://localhost:14265 -X POST -H 'Content-Type: application/json'   -d '{"
 - Make sure the result `index` matches `latestSolidSubtangleMilestoneIndex`:
 
 ```
-curl http://localhost:14265 -X POST   -H 'Content-Type: application/json'   -d '{"command": "getNodeInfo"}'
+curl http://localhost:14265 -X POST -H 'X-IOTA-API-Version: 1.4.1' -H 'Content-Type: application/json'   -d '{"command": "getNodeInfo"}'
 ```
 
 - If not, re-run iri with `--revalidate` flag, this will re-validate all the milestones & build an up-to-date snapshot. after the `latestSolidSubtangleMilestoneIndex` is up-to-date, rerun `Snapshot.getState` API command.
