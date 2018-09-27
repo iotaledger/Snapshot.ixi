@@ -1,5 +1,5 @@
 var iri = com.iota.iri;
-var snapshot = IOTA.milestone.latestSnapshot;
+var snapshot = IOTA.milestoneTracker.latestSnapshot;
 
 var Snapshot = Java.type("com.iota.iri.Snapshot");
 var stateField = Snapshot.class.getDeclaredField("state");
