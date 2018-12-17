@@ -8,6 +8,7 @@ var tangle 				= IOTA.tangle;
 var snapshotProvider 	= IOTA.snapshotProvider;
 var snapshotService 	= IOTA.snapshotService;
 var ledgerService		= IOTA.ledgerService;
+var config 				= IOTA.configuration;
 
 var iri = com.iota.iri;
 var Callable = iri.service.CallableRequest;
@@ -27,10 +28,9 @@ function getLedgerState(){
  * Updates the ledger to the supplied index 
  *
  * @param ledgerState The current state of the ledger
- * @param milestoneIndex The index we want to roll back/forward ti
- * @param epochTime the time of this milestone index in milliseconds
+ * @param milestoneIndex The index we want to roll back/forward to
  */
-function updateLedgerState(ledgerState, milestoneIndex, epochTime){
+function updateLedgerState(ledgerState, milestoneIndex){
 	if (ledgerState.getIndex() > milestoneIndex){
 		snapshotService.rollBackMilestones(ledgerState, milestoneIndex+1);
 	} else if (ledgerState.getIndex() < milestoneIndex){
@@ -44,7 +44,6 @@ curl http://localhost:14265 -X POST -H 'X-IOTA-API-Version: 1.4.1' -H 'Content-T
 */
 function getSnapshot(request) {
 	var milestoneIndex = parseInt(request['milestoneIndex']);
-	var epochTime = request['milestoneEpoch'];
 
 	if (!milestoneIndex){
 		milestoneIndex = snapshotProvider.getLatestSnapshot().getIndex();
@@ -60,7 +59,7 @@ function getSnapshot(request) {
 		if (ledgerState.getIndex() !== milestoneIndex && !snapshotProvider.getLatestSnapshot().isConsistent()){
 			return ErrorResponse.create("You cant make a snapshot when the ledger is inconsistent");
 		}
-		updateLedgerState(ledgerState, milestoneIndex, epochTime);
+		updateLedgerState(ledgerState, milestoneIndex);
 		
 		//This doesnt allow snapshotting of current 
 		//var milestone = MilestoneViewModel.get(tangle, milestoneIndex);
@@ -68,7 +67,10 @@ function getSnapshot(request) {
 		
 		if (ledgerState.getIndex() !== milestoneIndex){
 			return ErrorResponse.create("Failed to change to milestone");
-		} else if (snapshotProvider.getLatestSnapshot().getIndex() != milestoneIndex && ledgerState.equals(snapshotProvider.getLatestSnapshot())){
+		} else if (!config.isTestnet() 
+				   && snapshotProvider.getLatestSnapshot().getIndex() !== milestoneIndex 
+				   && ledgerState.equals(snapshotProvider.getLatestSnapshot())){
+			
 			return ErrorResponse.create("Nothing changed during updating. Missing StateDiff in database?");
 		}
 
