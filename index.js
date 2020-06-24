@@ -3,7 +3,7 @@ var System = java.lang.System;
 
 var MilestoneViewModel = com.iota.iri.controllers.MilestoneViewModel
 
-var tracker 			= IOTA.latestMilestoneTracker;
+var tracker 			= IOTA.milestoneSolidifier
 var tangle 				= IOTA.tangle;
 var snapshotProvider 	= IOTA.snapshotProvider;
 var snapshotService 	= IOTA.snapshotService;
